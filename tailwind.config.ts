@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import { fontFamily } from "tailwindcss/defaultTheme"
 
 const config = {
   darkMode: ["class"],
@@ -53,11 +54,12 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gold: {
-          light: "#d4af37",
-          DEFAULT: "#c5a028",
-          dark: "#b08c1e",
-        },
+        "onyx-black": "#121212",
+        "royal-gold": "#C6A664",
+        "pearl-white": "#F5F5F5",
+        "sapphire-blue": "#203E5F",
+        "smoked-silver": "#B8B8B8",
+        "deep-burgundy": "#4B2E2E",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,22 +67,29 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        playfair: ["var(--font-playfair)"],
-        cormorant: ["var(--font-cormorant)"],
-        montserrat: ["var(--font-montserrat)"],
-      },
-      backgroundImage: {
-        "hero-pattern": "url('/images/luxury-bg.png')",
-        "texture-pattern": "url('/images/subtle-texture.png')",
+        sans: ["var(--font-inter)", ...fontFamily.sans],
+        mono: ["var(--font-jetbrains-mono)", ...fontFamily.mono],
       },
       boxShadow: {
-        elegant: "0 10px 30px -10px rgba(0, 0, 0, 0.1)",
-        "elegant-hover": "0 20px 40px -15px rgba(0, 0, 0, 0.15)",
+        glow: "0 0 20px hsl(var(--royal-gold-hsl) / 0.5)",
+        "glow-lg": "0 0 30px hsl(var(--royal-gold-hsl) / 0.6)",
+        gold: "0 0 15px hsl(var(--royal-gold-hsl) / 0.5)",
+        "gold-lg": "0 0 25px hsl(var(--royal-gold-hsl) / 0.6)",
+      },
+      keyframes: {
+        "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
+        "accordion-up": { from: { height: "var(--radix-accordion-content-height)" }, to: { height: "0" } },
       },
       animation: {
-        "fade-in": "fadeIn 0.8s ease-in-out forwards",
-        "slide-up": "slideUp 0.8s ease-in-out forwards",
-        "slide-in-right": "slideInRight 0.8s ease-in-out forwards",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "grid-pattern": 'url("/grid-pattern.png")',
+        "luxury-bg": 'url("/images/luxury-bg.png")',
+        "subtle-texture": 'url("/images/subtle-texture.png")',
       },
     },
   },

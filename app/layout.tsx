@@ -1,38 +1,90 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Mona_Sans as FontSans } from "next/font/google" // Changed to Inter for consistency with previous context
+import localFont from "next/font/local"
 import "./globals.css"
+import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import Script from "next/script"
-import { AuthProvider } from "@/contexts/auth-context"
+import { AuthProvider } from "@/contexts/auth-context" // Assuming AuthProvider is still needed
+import { Toaster } from "@/components/ui/toaster" // Assuming Toaster is still needed
+import ScrollToTopButton from "@/components/scroll-to-top-button" // Import the new component
 
-const inter = Inter({ subsets: ["latin"] })
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
+
+const fontHeading = localFont({
+  src: "../assets/fonts/CalSans-SemiBold.woff2",
+  variable: "--font-heading",
+})
 
 export const metadata: Metadata = {
-  title: "Fairoz Portfolio",
-  description: "Personal portfolio website for Fairoz",
+  title: {
+    default: "Fairoz Faisal | IT & Cybersecurity Expert",
+    template: "%s | Fairoz Faisal",
+  },
+  description:
+    "Fairoz Faisal is an IT professional and system administrator specializing in cybersecurity, cloud infrastructure, and web application penetration testing. Explore his portfolio, skills, and services.",
+  keywords: [
+    "Fairoz Faisal",
+    "IT professional",
+    "cybersecurity expert",
+    "system administrator",
+    "cloud infrastructure",
+    "web development",
+    "network security",
+    "IT consultant",
+    "Kerala IT",
+    "tech portfolio",
+  ],
+  authors: [
+    {
+      name: "Fairoz Faisal",
+      url: "https://fairoz.in",
+    },
+  ],
+  creator: "Fairoz Faisal",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://fairoz.in",
+    title: "Fairoz Faisal | IT & Cybersecurity Expert",
+    description:
+      "Fairoz Faisal is an IT professional and system administrator specializing in cybersecurity, cloud infrastructure, and web application penetration testing. Explore his portfolio, skills, and services.",
+    siteName: "Fairoz Faisal's Portfolio",
+    images: [
+      {
+        url: "https://fairoz.in/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Fairoz Faisal's Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fairoz Faisal | IT & Cybersecurity Expert",
+    description:
+      "Fairoz Faisal is an IT professional and system administrator specializing in cybersecurity, cloud infrastructure, and web application penetration testing. Explore his portfolio, skills, and services.",
+    images: ["https://fairoz.in/og-image.jpg"],
+    creator: "@fairozfaisal", // Replace with actual Twitter handle if available
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#c5a028" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-      </head>
-      <body className={inter.className}>
+      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable, fontHeading.variable)}>
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <div className="flex min-h-screen flex-col">
@@ -40,119 +92,10 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
+            <Toaster />
+            <ScrollToTopButton /> {/* Add the ScrollToTopButton here */}
           </ThemeProvider>
         </AuthProvider>
-        <Script id="schema-script" type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "@id": "https://fairoz.in/#person",
-              "name": "Fairoz Faisal",
-              "url": "https://fairoz.in",
-              "image": {
-                "@type": "ImageObject",
-                "@id": "https://fairoz.in/#personImage",
-                "url": "https://fairoz.in/fairoz-portrait.jpeg",
-                "width": 450,
-                "height": 450,
-                "caption": "Fairoz Faisal - IT Professional & Cybersecurity Specialist"
-              },
-              "sameAs": [
-                "https://linkedin.com/in/fairozfaisal",
-                "https://github.com/fairozfaisal"
-              ],
-              "jobTitle": "IT Professional & Cybersecurity Specialist",
-              "worksFor": {
-                "@type": "Organization",
-                "name": "Airkerala",
-                "url": "https://airkerala.com"
-              },
-              "description": "IT Professional specializing in Cybersecurity, System Administration, Cloud Infrastructure, and Web Development",
-              "knowsAbout": ["Cybersecurity", "System Administration", "Cloud Computing", "Web Development", "Network Security", "AWS", "Azure", "Linux Server"],
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Muvattupuzha",
-                "addressRegion": "Kerala",
-                "addressCountry": "India"
-              },
-              "email": "info@fairoz.in",
-              "telephone": "+91 9961812897"
-            }
-          `}
-        </Script>
-        <Script id="website-schema" type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "@id": "https://fairoz.in/#website",
-              "url": "https://fairoz.in",
-              "name": "Fairoz Faisal - IT Professional & Cybersecurity Specialist",
-              "description": "Portfolio website of Fairoz Faisal, IT Professional specializing in Cybersecurity and System Administration",
-              "publisher": {
-                "@id": "https://fairoz.in/#person"
-              },
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://fairoz.in/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-              }
-            }
-          `}
-        </Script>
-        <Script id="breadcrumb-schema" type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              "itemListElement": [
-                {
-                  "@type": "ListItem",
-                  "position": 1,
-                  "name": "Home",
-                  "item": "https://fairoz.in"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 2,
-                  "name": "Profile",
-                  "item": "https://fairoz.in/profile"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 3,
-                  "name": "Skills",
-                  "item": "https://fairoz.in/skills"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 4,
-                  "name": "Projects",
-                  "item": "https://fairoz.in/projects"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 5,
-                  "name": "Blog",
-                  "item": "https://fairoz.in/blog"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 6,
-                  "name": "Gallery",
-                  "item": "https://fairoz.in/gallery"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 7,
-                  "name": "Contact",
-                  "item": "https://fairoz.in/contact"
-                }
-              ]
-            }
-          `}
-        </Script>
       </body>
     </html>
   )

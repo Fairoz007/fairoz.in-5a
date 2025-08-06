@@ -1,21 +1,18 @@
-import GalleryClientPage from "./GalleryClientPage"
 import type { Metadata } from "next"
+import GalleryClientPage from "./GalleryClientPage"
 
 export const metadata: Metadata = {
-  title: "Project Gallery | IT & Security Implementations",
+  title: "Gallery | Visual Portfolio of IT & Cybersecurity Projects",
   description:
-    "Visual showcase of Fairoz Faisal's projects, work environments, and professional achievements in IT, cybersecurity, and web development.",
+    "Explore a visual gallery showcasing Fairoz Faisal's IT and cybersecurity projects, including infrastructure diagrams, web application interfaces, and security testing visuals.",
   keywords: [
     "IT project gallery",
-    "cybersecurity implementations",
+    "cybersecurity visuals",
     "web development portfolio",
-    "cloud infrastructure projects",
-    "IT professional work",
+    "infrastructure diagrams",
+    "security testing images",
+    "Fairoz Faisal gallery",
     "tech project showcase",
-    "security solutions gallery",
-    "network setup gallery",
-    "server infrastructure images",
-    "IT project visuals",
   ],
   alternates: {
     canonical: "https://fairoz.in/gallery",

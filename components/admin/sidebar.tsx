@@ -9,8 +9,8 @@ export default function AdminSidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="h-full flex flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+    <div className="h-full flex flex-col bg-white dark:bg-gray-950">
+      <div className="p-4">
         <Link href="/admin" className="flex items-center">
           <span className="text-xl font-bold text-gray-900 dark:text-white">Fairoz Admin</span>
         </Link>

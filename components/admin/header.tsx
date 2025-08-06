@@ -7,13 +7,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Menu, User, LogOut } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import MobileSidebar from "./mobile-sidebar"
 
 export default function AdminHeader() {
@@ -27,7 +21,7 @@ export default function AdminHeader() {
   }
 
   return (
-    <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
+    <header className="bg-white dark:bg-gray-950 px-4 py-3 flex items-center justify-between">
       {/* Mobile menu button */}
       <button
         className="md:hidden text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -62,7 +56,7 @@ export default function AdminHeader() {
           <DropdownMenuItem asChild>
             <Link href="/admin/settings">Settings</Link>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+
           <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>

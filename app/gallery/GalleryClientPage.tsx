@@ -1,25 +1,73 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react"
+import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion"
+import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 
+interface GalleryImage {
+  id: string
+  image_url: string
+  alt_text: string
+  category: string
+  title?: string
+  description?: string
+}
+
+// Animated section component for scroll-triggered animations
+const AnimatedSection = ({ children, delay = 0 }) => {
+  const controls = useAnimation()
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, amount: 0.2 })
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible")
+    }
+  }, [controls, isInView])
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.8, delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 export default function GalleryClientPage() {
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState<GalleryImage[]>([])
 
   useEffect(() => {
     // Fetch gallery images from Supabase
     async function fetchGalleryImages() {
       try {
-        const { data } = await supabase.from("gallery_images").select("*").order("created_at", { ascending: false })
+        const { data, error } = await supabase
+          .from("gallery_images")
+          .select("*")
+          .order("created_at", { ascending: false })
 
-        setImages(data || [])
+        if (error) {
+          console.error("Error fetching gallery images:", error)
+          // Fallback to hardcoded data if Supabase fails
+          setImages(hardcodedImages)
+        } else {
+          setImages(data || [])
+        }
       } catch (error) {
-        console.error("Error fetching gallery images:", error)
+        console.error("Unexpected error fetching gallery images:", error)
+        // Fallback to hardcoded data for network errors
+        setImages(hardcodedImages)
       } finally {
         setIsLoading(false)
       }
@@ -40,7 +88,7 @@ export default function GalleryClientPage() {
     }
   }, [selectedImage])
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (selectedImage) {
       if (e.key === "Escape") {
         setSelectedImage(null)
@@ -62,6 +110,74 @@ export default function GalleryClientPage() {
       window.removeEventListener("keydown", handleKeyDown)
     }
   }, [selectedImage, images])
+
+  // Hardcoded images for fallback or initial development
+  const hardcodedImages: GalleryImage[] = [
+    {
+      id: "1",
+      image_url: "/gallery/project-1.png",
+      alt_text: "Project 1 Screenshot",
+      category: "web",
+      title: "Web Development Project",
+      description: "A modern web application showcasing responsive design.",
+    },
+    {
+      id: "2",
+      image_url: "/gallery/project-2.png",
+      alt_text: "Project 2 Screenshot",
+      category: "security",
+      title: "Cybersecurity Audit",
+      description: "Results from a comprehensive security audit.",
+    },
+    {
+      id: "3",
+      image_url: "/gallery/project-3.png",
+      alt_text: "Project 3 Screenshot",
+      category: "cloud",
+      title: "Cloud Infrastructure Setup",
+      description: "Diagram of a scalable cloud infrastructure.",
+    },
+    {
+      id: "4",
+      image_url: "/gallery/project-4.png",
+      alt_text: "Project 4 Screenshot",
+      category: "web",
+      title: "E-commerce Platform",
+      description: "User interface of an e-commerce website.",
+    },
+    {
+      id: "5",
+      image_url: "/gallery/project-5.png",
+      alt_text: "Project 5 Screenshot",
+      category: "security",
+      title: "Penetration Testing Report",
+      description: "Key findings from a recent penetration test.",
+    },
+    {
+      id: "6",
+      image_url: "/gallery/project-6.png",
+      alt_text: "Project 6 Screenshot",
+      category: "cloud",
+      title: "Server Migration Dashboard",
+      description: "Monitoring dashboard during a server migration.",
+    },
+    {
+      id: "7",
+      image_url: "/gallery/project-7.png",
+      alt_text: "Project 7 Screenshot",
+      category: "web",
+      title: "Portfolio Website Design",
+      description: "Early design concepts for a personal portfolio.",
+    },
+    {
+      id: "8",
+      image_url: "/gallery/project-8.png",
+      alt_text: "Project 8 Screenshot",
+      category: "security",
+      title: "Network Security Configuration",
+      description: "Configuration details for a secure network.",
+    },
+  ]
 
   return (
     <div className="pt-24">
@@ -93,38 +209,36 @@ export default function GalleryClientPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {images.map((image, index) => (
-                <motion.div
-                  key={image.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedImage(image)}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`View ${image.alt_text}`}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      setSelectedImage(image)
-                    }
-                  }}
-                >
-                  <div className="relative h-64 overflow-hidden rounded-lg shadow-elegant">
-                    <Image
-                      src={image.image_url || "/placeholder.svg"}
-                      alt={image.alt_text}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                      <div className="p-4 w-full">
-                        <p className="text-white font-medium">{image.category}</p>
+                <AnimatedSection key={image.id} delay={index * 0.1}>
+                  <div
+                    className="group cursor-pointer"
+                    onClick={() => setSelectedImage(image)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`View ${image.alt_text}`}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setSelectedImage(image)
+                      }
+                    }}
+                  >
+                    <div className="relative h-64 overflow-hidden rounded-lg shadow-elegant">
+                      <Image
+                        src={image.image_url || "/placeholder.svg"}
+                        alt={image.alt_text}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div className="p-4 w-full">
+                          <p className="text-white font-medium">{image.category}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </AnimatedSection>
               ))}
             </div>
           )}
@@ -189,20 +303,7 @@ export default function GalleryClientPage() {
                     }}
                     aria-label="Previous image"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
+                    <ChevronLeft className="h-6 w-6" aria-hidden="true" />
                   </button>
                   <button
                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
@@ -214,20 +315,7 @@ export default function GalleryClientPage() {
                     }}
                     aria-label="Next image"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
+                    <ChevronRight className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </>
               )}

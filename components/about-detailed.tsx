@@ -1,28 +1,9 @@
 "use client"
-
-import { useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { motion, useInView } from "framer-motion"
 import { Download, Star, ArrowRight, Building, MapPin, Calendar, Award } from "lucide-react"
-
-const FadeIn = ({ children, delay = 0 }) => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
 
 export default function AboutDetailed() {
   return (
@@ -31,27 +12,11 @@ export default function AboutDetailed() {
       <section className="about-banner py-24 md:py-32 text-white">
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="font-playfair text-3xl md:text-5xl font-medium mb-6 text-primary"
-            >
-              About Fairoz Faisal
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl md:text-2xl mb-8 font-light"
-            >
+            <h1 className="font-playfair text-3xl md:text-5xl font-medium mb-6 text-primary">About Fairoz Faisal</h1>
+            <p className="text-xl md:text-2xl mb-8 font-light">
               Dedicated to delivering secure, scalable, and innovative IT solutions
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
+            </p>
+            <div>
               <Button asChild size="lg" className="mr-4">
                 <Link href="/contact">Get In Touch</Link>
               </Button>
@@ -60,7 +25,7 @@ export default function AboutDetailed() {
                   <Download className="mr-2 h-4 w-4" /> Download Resume
                 </Link>
               </Button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -69,7 +34,7 @@ export default function AboutDetailed() {
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <FadeIn>
+            <div>
               <div>
                 <h2 className="section-title mb-6">Mission & Values</h2>
                 <p className="text-lg mb-6 leading-relaxed">
@@ -116,11 +81,10 @@ export default function AboutDetailed() {
                   </div>
                 </div>
               </div>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.2}>
+            <div>
               <div className="relative">
-                <div className="absolute -inset-4 md:-inset-6 border border-primary/20 rounded-lg -z-10"></div>
                 <div className="relative h-[400px] rounded-lg overflow-hidden shadow-elegant">
                   <Image
                     src="/fairoz-portrait.jpeg"
@@ -133,7 +97,7 @@ export default function AboutDetailed() {
                 <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary/10 rounded-full border border-primary/30"></div>
                 <div className="absolute -top-6 -left-6 w-16 h-16 bg-primary/10 rounded-full border border-primary/30"></div>
               </div>
-            </FadeIn>
+            </div>
           </div>
         </div>
       </section>
@@ -141,15 +105,15 @@ export default function AboutDetailed() {
       {/* Professional Journey */}
       <section className="py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <FadeIn>
+          <div>
             <h2 className="section-title text-center mb-12">Professional Journey</h2>
-          </FadeIn>
+          </div>
 
           <div className="max-w-4xl mx-auto">
             <div className="space-y-12">
-              <FadeIn>
+              <div>
                 <div className="relative pl-10 timeline-item">
-                  <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 border-2 border-primary"></div>
+                  <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20"></div>
                   <div>
                     <div className="flex flex-wrap gap-2 mb-2">
                       <span className="inline-flex items-center text-sm">
@@ -187,11 +151,11 @@ export default function AboutDetailed() {
                     </div>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
 
-              <FadeIn delay={0.2}>
+              <div>
                 <div className="relative pl-10 timeline-item">
-                  <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 border-2 border-primary"></div>
+                  <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20"></div>
                   <div>
                     <div className="flex flex-wrap gap-2 mb-2">
                       <span className="inline-flex items-center text-sm">
@@ -229,18 +193,22 @@ export default function AboutDetailed() {
                     </div>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
             </div>
 
-            <FadeIn delay={0.4}>
+            <div>
               <div className="flex justify-center mt-12">
-                <Button asChild variant="outline" className="border-primary/30 hover:border-primary">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="border-transparent text-royal-gold hover:bg-royal-gold/10 flex items-center"
+                >
                   <Link href="/profile" className="flex items-center">
                     View Full Profile <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
-            </FadeIn>
+            </div>
           </div>
         </div>
       </section>
@@ -248,12 +216,12 @@ export default function AboutDetailed() {
       {/* Professional Development */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
-          <FadeIn>
+          <div>
             <h2 className="section-title text-center mb-16">Professional Development</h2>
-          </FadeIn>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FadeIn>
+            <div>
               <Card className="border-none shadow-elegant h-full">
                 <CardContent className="p-8">
                   <div className="flex justify-center mb-6">
@@ -278,9 +246,9 @@ export default function AboutDetailed() {
                   </ul>
                 </CardContent>
               </Card>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.2}>
+            <div>
               <Card className="border-none shadow-elegant h-full">
                 <CardContent className="p-8">
                   <div className="flex justify-center mb-6">
@@ -303,9 +271,9 @@ export default function AboutDetailed() {
                   </ul>
                 </CardContent>
               </Card>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.4}>
+            <div>
               <Card className="border-none shadow-elegant h-full">
                 <CardContent className="p-8">
                   <div className="flex justify-center mb-6">
@@ -336,24 +304,23 @@ export default function AboutDetailed() {
                   </ul>
                 </CardContent>
               </Card>
-            </FadeIn>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Company History Timeline - For organizations or teams */}
+      {/* Company History Timeline */}
       <section className="py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <FadeIn>
+          <div>
             <h2 className="section-title text-center mb-12">Company History</h2>
             <p className="text-center text-muted-foreground max-w-3xl mx-auto mb-16">
               The evolution of our professional journey and key milestones that have shaped our IT services.
             </p>
-          </FadeIn>
-
+          </div>
           <div className="max-w-4xl mx-auto">
             <div className="space-y-16">
-              <FadeIn>
+              <div>
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="md:w-1/3 flex justify-center">
                     <div className="relative w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30">
@@ -368,9 +335,9 @@ export default function AboutDetailed() {
                     </p>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
 
-              <FadeIn delay={0.2}>
+              <div>
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="md:w-1/3 flex justify-center">
                     <div className="relative w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30">
@@ -385,9 +352,9 @@ export default function AboutDetailed() {
                     </p>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
 
-              <FadeIn delay={0.4}>
+              <div>
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="md:w-1/3 flex justify-center">
                     <div className="relative w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30">
@@ -402,7 +369,7 @@ export default function AboutDetailed() {
                     </p>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
             </div>
           </div>
         </div>

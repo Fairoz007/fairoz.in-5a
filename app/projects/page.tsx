@@ -1,21 +1,26 @@
-import ProjectsClientPage from "./ProjectsClientPage"
 import type { Metadata } from "next"
+import ProjectsClientPage from "./ProjectsClientPage" // Import the client component
 
 export const metadata: Metadata = {
-  title: "Portfolio Projects | IT & Cybersecurity Solutions",
+  title: "Projects | IT Infrastructure, Cybersecurity & Web Development",
   description:
-    "Explore Fairoz Faisal's portfolio of projects showcasing expertise in web development, cloud infrastructure, cybersecurity implementations, and system administration solutions.",
+    "Explore Fairoz Faisal's key projects in IT infrastructure, cybersecurity, and web development, including server migrations, security assessments, and full-stack web applications.",
   keywords: [
-    "IT projects portfolio",
+    "IT projects",
     "cybersecurity projects",
-    "web development portfolio",
-    "cloud infrastructure projects",
-    "system administration case studies",
-    "IT professional work",
-    "security implementation projects",
-    "DevTimeTracker project",
-    "CustomRig PC Builder",
-    "AirKerala website development",
+    "web development projects",
+    "server migration",
+    "Azure to Hetzner",
+    "OWASP Juice Shop",
+    "penetration testing",
+    "website development",
+    "Google Cloud hosting",
+    "Airkerala website",
+    "booking system development",
+    "admin dashboard",
+    "IT infrastructure design",
+    "network security projects",
+    "Fairoz Faisal projects",
   ],
   alternates: {
     canonical: "https://fairoz.in/projects",
@@ -23,5 +28,5 @@ export const metadata: Metadata = {
 }
 
 export default function ProjectsPage() {
-  return <ProjectsClientPage />
+  return <ProjectsClientPage /> // Render the client component
 }

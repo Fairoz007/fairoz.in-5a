@@ -7,12 +7,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, Tag, ArrowRight } from "lucide-react"
-import { motion, useInView, useAnimation } from "framer-motion"
+import { motion, useInView, useAnimation } from "framer-motion" // Re-added Framer Motion imports
 import { format } from "date-fns"
 import { supabase } from "@/lib/supabase"
 
-// Animation component for when elements come into view
-const FadeInWhenVisible = ({ children, delay = 0 }) => {
+// Re-added AnimatedSection component for consistency
+const AnimatedSection = ({ children, delay = 0 }) => {
   const controls = useAnimation()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.3 })
@@ -29,7 +29,7 @@ const FadeInWhenVisible = ({ children, delay = 0 }) => {
       initial="hidden"
       animate={controls}
       variants={{
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0 },
       }}
       transition={{ duration: 0.6, delay }}
@@ -98,10 +98,10 @@ export default function BlogClient() {
               {categories.map((category) => (
                 <Button
                   key={category.id}
-                  variant={activeCategory === category.id ? "default" : "outline"}
+                  variant={activeCategory === category.id ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setActiveCategory(category.id)}
-                  className={activeCategory === category.id ? "" : "border-primary/30 hover:border-primary"}
+                  className={activeCategory === category.id ? "" : "hover:text-royal-gold hover:bg-royal-gold/10"}
                 >
                   {category.name}
                 </Button>
@@ -121,7 +121,7 @@ export default function BlogClient() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post, index) => (
-                <FadeInWhenVisible key={post.id} delay={index * 0.1}>
+                <AnimatedSection key={post.id} delay={index * 0.1}>
                   <Card className="blog-card border-none shadow-elegant overflow-hidden h-full flex flex-col">
                     <div className="h-48 lg:h-52 bg-muted relative">
                       <Image
@@ -173,7 +173,7 @@ export default function BlogClient() {
                       </Button>
                     </CardContent>
                   </Card>
-                </FadeInWhenVisible>
+                </AnimatedSection>
               ))}
             </div>
           )}
